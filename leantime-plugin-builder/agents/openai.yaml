@@ -1,0 +1,4 @@
+interface:
+  display_name: "Leantime Plugin Builder"
+  short_description: "Build safe, native Leantime plugins and UI customizations."
+  default_prompt: "Create or modify a Leantime plugin with compatibility, UI, and automation-safety checks."
