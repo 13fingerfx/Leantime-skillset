@@ -10,6 +10,8 @@ The main skill is `leantime-plugin-builder`. It is designed for:
 - JSON-RPC/API and MCP integrations
 - upgrade-safe customization planning
 
+This repository also includes a first plugin source under `plugins/CodexDashboard`.
+
 ## Why This Exists
 
 Leantime plugins can install cleanly while still failing in three painful ways:
@@ -72,6 +74,36 @@ Package a plugin:
 python leantime-plugin-builder/scripts/package_leantime_plugin.py \
   /path/to/leantime/app/Plugins/FocusFlow \
   --out /tmp
+```
+
+## Included Plugin
+
+`plugins/CodexDashboard` is a Leantime 3.9.8 starter plugin with:
+
+- native dashboard widget registration
+- a plugin settings page using Leantime layout classes
+- dry-run ticket-status automation listener
+- documented compatibility, native UI, and automation-safety notes
+
+Build the plugin zip:
+
+```bash
+python leantime-plugin-builder/scripts/package_leantime_plugin.py \
+  plugins/CodexDashboard \
+  --out plugin-builds
+```
+
+Install by copying the extracted folder to:
+
+```text
+app/Plugins/CodexDashboard
+```
+
+Then enable it in Leantime:
+
+```bash
+php ./bin/leantime plugin:list
+php ./bin/leantime plugin:enable --plugin=CodexDashboard
 ```
 
 ## References Used

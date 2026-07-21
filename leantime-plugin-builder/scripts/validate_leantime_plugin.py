@@ -42,7 +42,7 @@ def main() -> int:
     composer_path = root / "composer.json"
     register_path = root / "register.php"
 
-    for required in [composer_path, register_path, root / "bootstrap.php", root / "Controllers", root / "Views", root / "Language"]:
+    for required in [composer_path, register_path, root / "bootstrap.php", root / "Controllers", root / "Templates", root / "Language"]:
         if not required.exists():
             errors.append(f"Missing required path: {rel(required, root)}")
 
@@ -67,6 +67,8 @@ def main() -> int:
         register = read(register_path)
         if "registerLanguageFiles" not in register:
             warnings.append("register.php does not register language files.")
+        if "Leantime\\Core\\Events\\Registration" in register:
+            errors.append("register.php imports the old/wrong Registration namespace; use Leantime\\Domain\\Plugins\\Services\\Registration.")
         if plugin_name not in register:
             warnings.append("register.php does not mention the plugin folder/id name.")
         if "<?php" not in register[:20]:

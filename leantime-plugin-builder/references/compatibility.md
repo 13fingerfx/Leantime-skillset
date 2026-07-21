@@ -42,7 +42,7 @@ For non-trivial plugins, create or recommend checks that answer:
 - Does `php ./bin/leantime plugin:list` still see the plugin?
 - Does enabling/disabling the plugin work?
 - Do registered menu items and routes still resolve?
-- Do views render without missing layout/template errors?
+- Do templates render without missing layout/template errors?
 - Do JSON-RPC or MCP calls still authenticate and return expected shapes?
 - Do automation hooks still fire exactly once for the same event?
 

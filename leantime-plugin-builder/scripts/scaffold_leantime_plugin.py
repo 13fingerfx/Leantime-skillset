@@ -64,7 +64,7 @@ $registration->addMenuItem([
 """
     return f"""<?php
 
-use Leantime\\Core\\Events\\Registration;
+use Leantime\\Domain\\Plugins\\Services\\Registration;
 
 $registration = app()->makeWith(Registration::class, ['pluginId' => '{plugin}']);
 
@@ -91,7 +91,7 @@ class {plugin}Controller extends Controller
 {{
     public function show(): void
     {{
-        $this->tpl->display('plugins.{route}.show');
+        $this->tpl->display('{route}::show');
     }}
 }}
 """
@@ -166,7 +166,7 @@ def docs(plugin: str, kinds: set[str]) -> str:
         "",
         "- Target Leantime version: TODO",
         "- Undocumented internals used: none intended",
-        "- Retest after upgrade: plugin list, enable/disable, routes, views, API/MCP calls, automations",
+        "- Retest after upgrade: plugin list, enable/disable, routes, templates, API/MCP calls, automations",
         "",
         "## Native UI Checks",
         "",
@@ -211,7 +211,7 @@ def main() -> int:
     write_new(destination / "bootstrap.php", bootstrap(plugin), args.force)
     write_new(destination / "Controllers" / f"{plugin}Controller.php", controller(plugin, route), args.force)
     write_new(destination / "Services" / f"{plugin}Service.php", service(plugin, kinds), args.force)
-    write_new(destination / "Views" / "show.blade.php", view(route, kinds), args.force)
+    write_new(destination / "Templates" / "show.blade.php", view(route, kinds), args.force)
     write_new(destination / "Language" / "en-US.ini", language(route, plugin, kinds), args.force)
     write_new(destination / "Docs" / "plugin-notes.md", docs(plugin, kinds), args.force)
 

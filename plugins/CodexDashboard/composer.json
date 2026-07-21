@@ -1,0 +1,19 @@
+{
+  "name": "13fingerfx/codex-dashboard",
+  "description": "Native Leantime dashboard widget and dry-run automation guardrails for Codex-assisted workflow tweaks.",
+  "version": "0.1.0",
+  "type": "leantime-plugin",
+  "license": "MIT",
+  "homepage": "https://github.com/13fingerfx/Leantime-skillset",
+  "authors": [
+    {
+      "name": "13FingerFX",
+      "email": "13fingerfx@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Leantime\\Plugins\\CodexDashboard\\": "/"
+    }
+  }
+}

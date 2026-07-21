@@ -12,7 +12,7 @@ app/Plugins/PluginName/
 ├── register.php
 ├── bootstrap.php
 ├── Controllers/
-├── Views/
+├── Templates/
 ├── Language/
 └── Services/
 ```
@@ -46,9 +46,9 @@ Common checks:
 - Menu labels and tooltips use translation keys, not raw UI text.
 - Menu URLs match controller/action naming.
 
-## Controllers And Views
+## Controllers And Templates
 
-Leantime uses an MVC/front-controller pattern. Plugin controllers should live in `Controllers/`, extend the appropriate Leantime base controller when needed, and render Blade views under `Views/`.
+Leantime uses an MVC/front-controller pattern. Plugin controllers should live in `Controllers/`, extend the appropriate Leantime base controller when needed, and render Blade views under `Templates/`. In Leantime 3.9.x, plugin template namespaces are registered from `app/Plugins/PluginName/Templates` as `pluginname::...`.
 
 Native view conventions matter:
 
@@ -84,7 +84,7 @@ Run the validator before packaging and after installation.
 
 - Folder name and namespace do not match.
 - `composer.json` omits `"type": "leantime-plugin"`.
-- Views render from a path that does not match the plugin name.
+- Templates render from a namespace/path that does not match the plugin name.
 - UI strings are hard-coded instead of translated.
 - Plugin calls internal Leantime services without a compatibility note.
 - Plugin installs but does nothing because it was copied to the wrong directory level.
