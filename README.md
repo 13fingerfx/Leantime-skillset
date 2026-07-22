@@ -1,8 +1,17 @@
 # Leantime Skillset
 
-Codex skill for building, reviewing, validating, and packaging Leantime plugins.
+Agent skills for building, reviewing, validating, and packaging Leantime plugins.
 
-The main skill is `leantime-plugin-builder`. It is designed for:
+Two equivalent skills are included, one per agent:
+
+- `leantime-plugin-builder/` — the original Codex skill.
+- `claude-skills/leantime-plugin-builder/` — a Claude Code skill with the same
+  design, plus a fourth **security** gate (secrets, unescaped output, SQL/command
+  injection, webhook auth), a fix for a real gap in the Codex version (scaffolded
+  plugins had no `routes.php`, so their controllers were unreachable), and a
+  packaging script that validates automatically instead of only recommending it.
+
+Both are designed for:
 
 - Leantime plugins under `app/Plugins`
 - automated workflow plugins
@@ -14,15 +23,18 @@ This repository also includes a first plugin source under `plugins/CodexDashboar
 
 ## Why This Exists
 
-Leantime plugins can install cleanly while still failing in three painful ways:
+Leantime plugins can install cleanly while still failing in four painful ways:
 
 1. They depend on Leantime internals and break across upgrades.
 2. They work technically but look unlike the native Leantime UI.
 3. They automate record changes without idempotency, locking, audit logs, or replay tests.
+4. They render external/user data unescaped, hard-code secrets, or expose a mutating route with no auth check.
 
-This skill makes Codex check those risks before and after it creates plugin code.
+Both skills make the agent check those risks before and after it creates plugin code. (The Codex skill predates the fourth check; the Claude skill adds it explicitly — see below.)
 
 ## Install
+
+### Codex
 
 Clone this repository, then copy the skill folder into your Codex skills directory:
 
@@ -34,9 +46,23 @@ cp -R Leantime-skillset/leantime-plugin-builder ~/.codex/skills/
 
 Restart Codex or start a new task so the skill list refreshes.
 
+### Claude Code
+
+Copy the Claude skill folder into your personal skills directory, or into a
+project's `.claude/skills/` to scope it to that repo:
+
+```bash
+git clone https://github.com/13fingerfx/Leantime-skillset.git
+mkdir -p ~/.claude/skills
+cp -R Leantime-skillset/claude-skills/leantime-plugin-builder ~/.claude/skills/
+```
+
+Start a new Claude Code session so the skill list refreshes, then invoke it
+with `/leantime-plugin-builder` or by describing Leantime plugin work.
+
 ## Use
 
-Ask Codex for Leantime plugin work, for example:
+Ask your agent for Leantime plugin work, for example:
 
 ```text
 Use the Leantime plugin builder skill to create a dashboard plugin that shows overdue tasks by project.
@@ -51,6 +77,12 @@ Use the Leantime plugin builder skill to review this plugin for upgrade safety a
 ```
 
 ## Included Tools
+
+Both skills ship the same three scripts (`scripts/scaffold_leantime_plugin.py`,
+`scripts/validate_leantime_plugin.py`, `scripts/package_leantime_plugin.py`)
+under their own skill folder — `leantime-plugin-builder/` for Codex,
+`claude-skills/leantime-plugin-builder/` for Claude Code. The examples below
+use the Codex path; swap in the Claude path to run the improved versions.
 
 Scaffold a plugin:
 
@@ -68,7 +100,8 @@ python leantime-plugin-builder/scripts/validate_leantime_plugin.py \
   /path/to/leantime/app/Plugins/FocusFlow
 ```
 
-Package a plugin:
+Package a plugin (the Claude version validates automatically first and
+refuses to package on hard errors unless you pass `--skip-validate`):
 
 ```bash
 python leantime-plugin-builder/scripts/package_leantime_plugin.py \
